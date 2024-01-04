@@ -36,6 +36,9 @@ sudo sh ./bootstrap.sh
 cd ..
 rm -rf ./gamemode
 
+# install other deps
+sudo apt install -yqq libvulkan1 libvulkan1:i386
+
 # Set winetricks
 echo -e "[*] Update: winetrikcs win10\n"
 winetricks win10
