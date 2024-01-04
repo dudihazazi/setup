@@ -103,6 +103,20 @@ wget -q --show-progress "https://files2.freedownloadmanager.org/6/latest/freedow
 sudo apt install -yqq ./fdm.deb
 rm -f ./fdm.deb
 
+# install spotify
+echo -e "[*] Installing: spotify + spicetify\n"
+curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+sudo apt update
+sudo apt install -yqq spotify-client
+
+sudo chmod a+wr /usr/share/spotify
+sudo chmod a+wr /usr/share/spotify/Apps -R
+
+curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh
+spicetify backup apply
+
 # install Apps
 echo -e "[*] Installing: Multiple Apps\n"
 sudo apt install -yqq chromium-browser
