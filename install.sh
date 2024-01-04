@@ -117,6 +117,12 @@ curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/inst
 curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh
 spicetify backup apply
 
+# install VPN. currently use surfshark
+echo -e "[*] Installing: surfshark\n"
+curl -f https://downloads.surfshark.com/linux/debian-install.sh --output surfshark-install.sh
+sudo sh surfshark-install.sh
+rm -f surfshark-install.sh
+
 # install Apps
 echo -e "[*] Installing: Multiple Apps\n"
 sudo apt install -yqq chromium-browser
