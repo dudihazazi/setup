@@ -108,6 +108,7 @@ echo -e "[*] Installing: Multiple Apps\n"
 sudo apt install -yqq chromium-browser
 sudo apt install -yqq vlc
 sudo apt install -yqq gparted
+sudo apt install -yqq pavucontrol
 
 # change default shell to zsh
 echo -e "[*] Updating: default shell to zsh\n"
