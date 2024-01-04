@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # update installed packages
 echo -e "[*] Updating: packages\n"
@@ -10,8 +10,17 @@ echo -e "[*] Updating: drivers\n"
 sudo ubuntu-drivers install
 
 # install essentials packages
-echo -e "[*] Installing: wget, curl, git, apt-transport-https\n"
-sudo apt install -yqq wget curl git apt-transport-https
+echo -e "[*] Installing: essentials packages\n"
+sudo apt install -yqq gpg wget curl git apt-transport-https micro dconf-cli dirmngr ca-certificates software-properties-common
+
+# install eza, replacement to ls
+echo -e "[*] Installing: eza\n"
+sudo mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+sudo apt update
+sudo apt install -yqq eza
 
 # install zsh and oh-my-zsh
 echo -e "[*] Installing: zsh\n"
@@ -25,7 +34,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # install font for powerlevel10k
 echo -e "[*] Installing: MesloLGS fonts\n"
-mkdir -p ~/.local/share/fonts/MesloLGS
+sudo mkdir -p ~/.local/share/fonts/MesloLGS
 wget -q --show-progress "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -P ~/.local/share/fonts/MesloLGS
 wget -q --show-progress "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf" -P ~/.local/share/fonts/MesloLGS
 wget -q --show-progress "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf" -P ~/.local/share/fonts/MesloLGS
@@ -33,14 +42,78 @@ wget -q --show-progress "https://github.com/romkatv/powerlevel10k-media/raw/mast
 fc-cache -fv ~/.local/share/fonts/MesloLGS
 
 # install powerlevel10k theme for zsh
-echo -e "[*] Installing: powerlevel10k theme\n"
+echo -e "[*] Installing: powerlevel10k theme for zsh\n"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# update zsh config
-echo -e "[*] Updating: zsh config\n"
-cp ./dotfiles/.zshrc ~/.zshrc
-cp ./dotfiles/.p10k.zsh ~/.p10k.zsh
+# install dracula theme for gnome terminal
+echo -e "[*] Installing: dracula theme for gnome terminal\n"
+git clone https://github.com/dracula/gnome-terminal
+sudo sh ./gnome-terminal/install.sh
+sudo rm -rf ./gnome-terminal
+
+# update dotfiles
+echo -e "[*] Updating: dotfiles\n"
+sudo cp ./dotfiles/.bashrc ~/.bashrc
+sudo cp ./dotfiles/.zshrc ~/.zshrc
+sudo cp ./dotfiles/.p10k.zsh ~/.p10k.zsh
+sudo cp ./dotfiles/.gitconfig ~/.gitconfig
+
+# install gh cli
+echo -e "[*] Installing: gh CLI\n"
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install -yqq gh
+
+# generate ssh key
+echo -e "[*] Updating: SSH key\n"
+ssh-keygen -t ed25519 -C "hazazi.dudi@gmail.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# register ssh key to github
+echo -e "[*] Updating: GH Auth\n"
+gh auth login
+
+# install vscode
+echo -e "[*] Installing: VSCode\n"
+curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /usr/share/keyrings/vscode.gpg > /dev/null
+echo deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | sudo tee /etc/apt/sources.list.d/vscode.list
+sudo apt update
+sudo apt install -yqq code
+
+# install BitWarden
+echo -e "[*] Installing: BitWarden\n"
+wget -q --show-progress "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb" -O "./bitwarden.deb"
+sudo apt install -yqq ./bitwarden.deb
+rm -f ./bitwarden.deb
+
+# install Zoom
+echo -e "[*] Installing: Zoom\n"
+sudo apt install libegl1-mesa libxcb-cursor0 libxcb-xtest0
+wget -q --show-progress "https://zoom.us/client/latest/zoom_amd64.deb" -O "./zoom.deb"
+sudo apt install -yqq ./zoom.deb
+rm -f ./zoom.deb
+
+# install freedownloadmanager
+echo -e "[*] Installing: FDM\n"
+wget -q --show-progress "https://files2.freedownloadmanager.org/6/latest/freedownloadmanager.deb" -O "./fdm.deb"
+sudo apt install -yqq ./fdm.deb
+rm -f ./fdm.deb
+
+# install Apps
+echo -e "[*] Installing: Multiple Apps\n"
+sudo apt install -yqq chromium-browser
+sudo apt install -yqq vlc
+sudo apt install -yqq gparted
 
 # change default shell to zsh
 echo -e "[*] Updating: default shell to zsh\n"
 sudo chsh -s $(which zsh)
+
+# clean apt
+sudo apt autoclean
+sudo apt autoremove
+echo -e "[*] Setup Finished\n"

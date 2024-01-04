@@ -1,0 +1,9 @@
+[user]
+	name = dudihazazi
+	email = hazazi.dudi@gmail.com
+[init]
+	defaultBranch = main
+[core]
+	editor = code --wait
+[fetch]
+	prune = true
