@@ -21,6 +21,13 @@ sudo add-apt-repository -y ppa:lutris-team/lutris
 sudo apt update
 sudo apt install -yqq lutris
 
+# install steam
+echo -e "[*] Install: steam\n"
+curl -s http://repo.steampowered.com/steam/archive/stable/steam.gpg | sudo tee /usr/share/keyrings/steam.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/steam.gpg] http://repo.steampowered.com/steam/ stable steam" | sudo tee /etc/apt/sources.list.d/steam.list
+sudo apt update
+sudo apt install -yqq libgl1-mesa-dri:amd64 libgl1-mesa-dri:i386 libgl1-mesa-glx:amd64 libgl1-mesa-glx:i386 steam-launcher
+
 # install protonup-qt
 echo -e "[*] Install: protonup-qt\n"
 sudo flatpak run net.davidotek.pupgui2
