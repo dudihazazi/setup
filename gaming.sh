@@ -30,7 +30,7 @@ sudo apt install -yqq libgl1-mesa-dri:amd64 libgl1-mesa-dri:i386 libgl1-mesa-glx
 
 # install protonup-qt
 echo -e "[*] Install: protonup-qt\n"
-sudo flatpak run net.davidotek.pupgui2
+sudo flatpak install -y flathub net.davidotek.pupgui2
 
 # install gamemode
 echo -e "[*] Install: gamemode\n"
