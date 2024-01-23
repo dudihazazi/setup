@@ -77,6 +77,17 @@ ssh-add ~/.ssh/id_ed25519
 echo -e "[*] Updating: GH Auth\n"
 gh auth login
 
+# install fnm
+sudo curl -fsSL https://fnm.vercel.app/install | bash
+
+# install conda
+echo -e "[*] Installing: Conda\n"
+curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | sudo gpg --dearmor > conda.gpg
+install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
+sudo apt update
+sudo apt install -yqq conda
+
 # install vscode
 echo -e "[*] Installing: VSCode\n"
 curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /usr/share/keyrings/vscode.gpg > /dev/null
@@ -129,6 +140,7 @@ sudo apt install -yqq chromium-browser
 sudo apt install -yqq vlc
 sudo apt install -yqq gparted
 sudo apt install -yqq pavucontrol
+sudo apt install -yqq unrar
 
 # change default shell to zsh
 echo -e "[*] Updating: default shell to zsh\n"
