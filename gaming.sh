@@ -44,10 +44,16 @@ cd ..
 rm -rf ./gamemode
 
 # install other deps
+echo -e "[*] Install: other deps\n"
 sudo apt install -yqq libvulkan1 libvulkan1:i386
 
 # Set winetricks
 echo -e "[*] Update: winetrikcs win10\n"
 winetricks win10
+
+# install xpad for joystick
+echo -e "[*] Install: xpad driver\n"
+sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
+sudo dkms install -m xpad -v 0.4
 
 echo -e "[*] Finished\n"
