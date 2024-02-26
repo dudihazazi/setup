@@ -82,11 +82,10 @@ sudo curl -fsSL https://fnm.vercel.app/install | bash
 
 # install conda
 echo -e "[*] Installing: Conda\n"
-curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | sudo gpg --dearmor > conda.gpg
-install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
-sudo apt update
-sudo apt install -yqq conda
+curl -O https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
+sh ./Anaconda3-2023.09-0-Linux-x86_64.sh
+rm -rf ./Anaconda3-2023.09-0-Linux-x86_64.sh
+
 
 # install vscode
 echo -e "[*] Installing: VSCode\n"
