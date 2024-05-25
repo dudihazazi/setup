@@ -39,7 +39,7 @@ git clone https://github.com/FeralInteractive/gamemode.git
 cd ./gamemode
 latestVersion=$(git ls-remote --tags https://github.com/FeralInteractive/gamemode.git | tail -n 1 | cut -d/ -f3-);
 git checkout $latestVersion
-sudo sh ./bootstrap.sh
+sudo ./bootstrap.sh
 cd ..
 rm -rf ./gamemode
 
@@ -50,5 +50,12 @@ sudo apt install -yqq libvulkan1 libvulkan1:i386
 # Set winetricks
 echo -e "[*] Update: winetrikcs win10\n"
 winetricks win10
+
+# install xpadneo for joystick
+echo -e "[*] Install: xpadneo driver\n"
+sudo apt install -yqq dkms linux-headers-`uname -r`
+mkdir -p ~/Documents/tools/xpadneo && cd ~/Documents/tools/xpadneo
+git clone https://github.com/atar-axis/xpadneo.git ./
+sudo ./install.sh
 
 echo -e "[*] Finished\n"

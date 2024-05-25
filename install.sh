@@ -48,7 +48,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 # install dracula theme for gnome terminal
 echo -e "[*] Installing: dracula theme for gnome terminal\n"
 git clone https://github.com/dracula/gnome-terminal
-sudo sh ./gnome-terminal/install.sh
+sudo ./gnome-terminal/install.sh
 sudo rm -rf ./gnome-terminal
 
 # update dotfiles
@@ -130,8 +130,8 @@ spicetify backup apply
 # install VPN. currently use surfshark
 echo -e "[*] Installing: surfshark\n"
 curl -f https://downloads.surfshark.com/linux/debian-install.sh --output surfshark-install.sh
-sudo sh surfshark-install.sh
-rm -f surfshark-install.sh
+sudo ./surfshark-install.sh
+rm -f ./surfshark-install.sh
 
 # install Apps
 echo -e "[*] Installing: Multiple Apps\n"
