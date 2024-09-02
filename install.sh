@@ -13,7 +13,7 @@ sudo ubuntu-drivers install
 echo -e "[*] Installing: essentials packages\n"
 sudo apt install -yqq gpg wget curl git apt-transport-https micro dconf-cli dirmngr ca-certificates software-properties-common
 
-# install eza, replacement to ls
+# install eza
 echo -e "[*] Installing: eza\n"
 sudo mkdir -p /etc/apt/keyrings
 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
@@ -127,11 +127,17 @@ curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/inst
 curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh
 spicetify backup apply
 
-# install VPN. currently use surfshark
+# install surfshark VPN
 echo -e "[*] Installing: surfshark\n"
 curl -f https://downloads.surfshark.com/linux/debian-install.sh --output surfshark-install.sh
 sudo ./surfshark-install.sh
 rm -f ./surfshark-install.sh
+
+# install Cloudflare Warp
+echo -e "[*] Installing: cloudflare warp\n"
+curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(awk -F '=' '/^DISTRIB_CODENAME=/ {print $2}' /etc/upstream-release/lsb-release) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+sudo apt update && sudo apt install cloudflare-warp
 
 # install Apps
 echo -e "[*] Installing: Multiple Apps\n"
@@ -141,6 +147,7 @@ sudo apt install -yqq gimp
 sudo apt install -yqq gparted
 sudo apt install -yqq pavucontrol
 sudo apt install -yqq unrar
+sudo apt install -yqq timeshift
 
 # change default shell to zsh
 echo -e "[*] Updating: default shell to zsh\n"
