@@ -136,7 +136,7 @@ rm -f ./surfshark-install.sh
 # install Cloudflare Warp
 echo -e "[*] Installing: cloudflare warp\n"
 curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(awk -F '=' '/^DISTRIB_CODENAME=/ {print $2}' /etc/upstream-release/lsb-release) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(inxi -Sx | awk '/base:/ {print $NF}') main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
 sudo apt update && sudo apt install cloudflare-warp
 
 # install Apps
